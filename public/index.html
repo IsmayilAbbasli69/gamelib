@@ -1,39 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="az">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Premium Game Library - Hackathon Edition</title>
+    <title>3D Premium Oyun Kitabxanası - Steam Edition</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
     <div id="vignette"></div>
-    <div id="category-hud">Library</div>
-    <div id="instructions">SCROLL FOR CATEGORIES • USE ARROWS FOR MORE GAMES • CLICK TO INSPECT</div>
+    <div id="category-hud">Kitabxana</div>
+    <div id="instructions">RƏFLƏR ÜÇÜN MOUSE SCROLL • DAHA ÇOX OYUN ÜÇÜN OX DÜYMƏLƏRİ • BAXMAQ ÜÇÜN KLİKLƏ</div>
+
+    <div id="steam-login-box">
+        <input type="text" id="steam-id-input" placeholder="Steam ID və ya Linki Yapışdır">
+        <button id="steam-load-btn">YÜKLƏ</button>
+    </div>
 
     <div id="room-nav">
-        <button onclick="rotateRoom('left')">◀ Recommendations</button>
-        <button onclick="rotateRoom('front')">Main Library</button>
-        <button onclick="rotateRoom('right')">Favorites ▶</button>
+        <button onclick="rotateRoom('left')">◀ Tövsiyələr</button>
+        <button onclick="rotateRoom('front')">Əsas Kitabxana</button>
+        <button onclick="rotateRoom('right')">Seçilmişlər ▶</button>
     </div>
 
     <button class="nav-arrow" id="arrow-left">◀</button>
     <button class="nav-arrow" id="arrow-right">▶</button>
 
     <div id="info-panel">
-        <h1 id="game-title">Game Title</h1>
-        <div class="meta-tags" id="game-tags"></div>
-        <p id="game-desc">Game description goes here.</p>
-        <button id="add-fav-btn">★ Add to Favorites</button>
-        <button id="close-btn">Return to Shelf</button>
+        <img id="panel-banner" src="" alt="Game Banner">
+        <div class="panel-content">
+            <h1 id="game-title">Oyun Adı</h1>
+            <div class="meta-tags" id="game-tags"></div>
+            <p id="game-desc">Oyun barədə məlumatlar burada görünəcək.</p>
+            <button id="add-fav-btn">★ Seçilmişlərə Əlavə Et</button>
+            <button id="close-btn">Rəfə Qayıt</button>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="app.js"></script>
+    <script src="/app.js"></script>
 </body>
 </html>

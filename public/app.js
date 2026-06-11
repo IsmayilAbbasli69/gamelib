@@ -1,4 +1,4 @@
-// --- 1. Core Scene Setup ---
+// Mövcud app.js kodunu bununla əvəz et
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x020204, 0.05);
 
@@ -16,31 +16,29 @@ document.body.appendChild(renderer.domElement);
 const textureLoader = new THREE.TextureLoader();
 textureLoader.crossOrigin = 'anonymous';
 
-// --- 2. Advanced Cinematic Lights & Dynamic Colors ---
-scene.add(new THREE.AmbientLight(0xffffff, 0.08));
+// --- DAHA CANLI İŞIQLANDIRMA ---
+scene.add(new THREE.AmbientLight(0xffffff, 0.1));
 
-const dirLight = new THREE.DirectionalLight(0x7da2ff, 0.6);
+const dirLight = new THREE.DirectionalLight(0x7da2ff, 0.8);
 dirLight.position.set(-10, 8, 8);
 dirLight.castShadow = true;
 scene.add(dirLight);
 
-const spotLight = new THREE.SpotLight(0xfff3e3, 2.5, 30, Math.PI / 4, 0.5, 1);
+const spotLight = new THREE.SpotLight(0xfff3e3, 3.0, 30, Math.PI / 4, 0.5, 1);
 spotLight.position.set(0, 4, 8);
 spotLight.castShadow = true;
 scene.add(spotLight);
-scene.add(spotLight.target); // FİX: İşığın hədəfini səhnəyə əlavə edirik ki, onu da hərəkət etdirə bilək!
+scene.add(spotLight.target);
 
-// Otaqlara görə hədəf işıq rəngləri
+// Tövsiyələr otağı üçün Neon Cyan və Purple
 const colors = {
-    main: { spot: new THREE.Color(0xfff3e3), dir: new THREE.Color(0x7da2ff) }, // Ağ/Mavi
-    recs: { spot: new THREE.Color(0x00e5ff), dir: new THREE.Color(0x4a00e0) }, // Cyan/Tünd Bənövşəyi (Neon)
-    favs: { spot: new THREE.Color(0xffd700), dir: new THREE.Color(0xff4500) }  // Qızılı/Narıncı (Premium)
+    main: { spot: new THREE.Color(0xfff3e3), dir: new THREE.Color(0x7da2ff) }, 
+    recs: { spot: new THREE.Color(0x00ffff), dir: new THREE.Color(0xff00ff) }, 
+    favs: { spot: new THREE.Color(0xffd700), dir: new THREE.Color(0xff4500) }  
 };
-
 let targetSpotColor = new THREE.Color(colors.main.spot);
 let targetDirColor = new THREE.Color(colors.main.dir);
 
-// --- 3. Texture Setup & Materials ---
 const loadTex = (diff, bump, repX, repY) => {
     const col = textureLoader.load(diff);
     const bmp = textureLoader.load(bump);
@@ -57,12 +55,11 @@ const advancedWoodMat = new THREE.MeshStandardMaterial({ ...woodMats, bumpScale:
 const plasticCaseMat = new THREE.MeshStandardMaterial({ color: 0x111113, roughness: 0.5, metalness: 0.1 });
 const caseGeo = new THREE.BoxGeometry(1.6, 2.4, 0.25);
 
-// --- 4. Room Setup (FLAT CAROUSEL METHOD) ---
 const worldGroup = new THREE.Group();
 scene.add(worldGroup);
 
-const frontWall = new THREE.Mesh(new THREE.PlaneGeometry(150, 35), advancedWallMat);
-frontWall.position.set(0, 0, -3.5);
+const frontWall = new THREE.Mesh(new THREE.PlaneGeometry(150, 50), advancedWallMat);
+frontWall.position.set(0, -5, -3.5);
 frontWall.receiveShadow = true;
 worldGroup.add(frontWall);
 
@@ -73,10 +70,8 @@ const recGroup = new THREE.Group();
 recGroup.position.set(-35, 0, 0);   
 libraryGroup.position.set(0, 0, 0); 
 favGroup.position.set(35, 0, 0);    
-
 worldGroup.add(libraryGroup, favGroup, recGroup);
 
-// --- 5. Runtime State ---
 let targetCameraX = 0, targetGroupY = 0, inspectRotation = 0;
 let selectedCassette = null, isScrollLocked = false, scrollTimeout = null;
 let libraryCategories = [], activeCatIndex = 0;
@@ -92,7 +87,6 @@ const viewState = {
     },
 };
 
-// --- 6. UI References ---
 const $ = (id) => document.getElementById(id);
 const hudEl = $('category-hud');
 const leftArrow = $('arrow-left');
@@ -101,11 +95,11 @@ const infoPanel = $('info-panel');
 const titleEl = $('game-title');
 const tagsEl = $('game-tags');
 const descEl = $('game-desc');
+const bannerEl = $('panel-banner'); // Yeni afişa şəkli
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-// --- 7. Helpers & Builders ---
 function createShelf(targetGroup, yPos) {
     const shelf = new THREE.Mesh(new THREE.BoxGeometry(32, 0.25, 2.5), advancedWoodMat);
     shelf.position.set(6, yPos - 1.4, -0.5);
@@ -142,11 +136,11 @@ function updateHud() {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
         if (viewState.current === 'library') {
-            hudEl.innerText = libraryCategories[activeCatIndex] ? libraryCategories[activeCatIndex].name : 'Library';
+            hudEl.innerText = libraryCategories[activeCatIndex] ? libraryCategories[activeCatIndex].name : 'Kitabxana';
         } else if (viewState.current === 'favorites') {
-            hudEl.innerText = 'Favorites';
+            hudEl.innerText = 'Seçilmiş Oyunlar';
         } else {
-            hudEl.innerText = 'Recommendations';
+            hudEl.innerText = 'Tövsiyələr';
         }
         hudEl.style.opacity = 1;
     }, 180);
@@ -220,7 +214,7 @@ function addCassetteToScene(game, parentGroup, yPos, itemIndex, viewType, catInd
 function buildLibraryWall(data) {
     libraryCategories = data.categories.map((c) => {
         const gamesInCat = data.games.filter((g) => g.categoryId === c.id).length;
-        return { ...c, currentX: 0, maxScroll: Math.max(gamesInCat - 3, 0) };
+        return { ...c, currentX: 0, maxScroll: Math.max(gamesInCat - 4, 0) };
     });
 
     libraryCategories.forEach((cat) => createShelf(libraryGroup, cat.yPos));
@@ -234,34 +228,32 @@ function buildLibraryWall(data) {
     });
 }
 
-function buildSideWall(sideName, ids) {
+// Çoxlu rəfləri dəstəkləyən yenilənmiş funksiya
+function buildSideWall(sideName, shelfDict) {
     const sideGroup = sideName === 'favorites' ? favGroup : recGroup;
-    const sideGames = ids.map((id) => gameById.get(String(id))).filter(Boolean);
     const state = viewState.side[sideName];
+    
+    let maxLen = 0;
+    let yOffset = 0;
+    state.ids = [];
 
-    state.ids = sideGames.map((g) => g.id);
-    state.currentX = 0;
-    state.maxScroll = Math.max(sideGames.length - 4, 0);
-
-    createShelf(sideGroup, 0);
-
-    sideGames.forEach((game, idx) => {
-        addCassetteToScene(game, sideGroup, 0, idx, sideName, -1);
+    // Obyektin içindəki hər bir rəfi oxuyuruq
+    Object.entries(shelfDict).forEach(([shelfName, ids]) => {
+        const sideGames = ids.map(id => gameById.get(String(id))).filter(Boolean);
+        if(sideGames.length > maxLen) maxLen = sideGames.length;
+        
+        createShelf(sideGroup, yOffset);
+        
+        sideGames.forEach((game, idx) => {
+            state.ids.push(game.id);
+            addCassetteToScene(game, sideGroup, yOffset, idx, sideName, -1);
+        });
+        
+        yOffset -= 6; // Növbəti rəfi bir pillə aşağı qoyur
     });
-}
 
-function addToFavorites(gameId) {
-    const normalized = String(gameId);
-    if (viewState.side.favorites.ids.includes(normalized)) return;
-
-    const game = gameById.get(normalized);
-    if (!game) return;
-
-    const idx = viewState.side.favorites.ids.length;
-    viewState.side.favorites.ids.push(normalized);
-    viewState.side.favorites.maxScroll = Math.max(viewState.side.favorites.ids.length - 4, 0);
-    addCassetteToScene(game, favGroup, 0, idx, 'favorites', -1);
-    updateArrowVisibility();
+    state.currentX = 0;
+    state.maxScroll = Math.max(maxLen - 4, 0);
 }
 
 function buildFromData(data) {
@@ -269,38 +261,74 @@ function buildFromData(data) {
     gameData.forEach((g) => gameById.set(String(g.id), g));
 
     buildLibraryWall(data);
-    buildSideWall('favorites', (data.shelves && data.shelves.favorites) || []);
-    buildSideWall('recommendations', (data.shelves && data.shelves.recommendations) || []);
+    buildSideWall('favorites', data.shelves.favorites || {});
+    buildSideWall('recommendations', data.shelves.recommendations || {});
 
     updateHud();
     updateArrowVisibility();
 }
 
-// --- 8. Data Fetch ---
-const fallbackData = {
-    categories: [
-        { id: 'rpg', name: 'Role Playing Games', yPos: 0 },
-        { id: 'fps', name: 'First Person Shooters', yPos: -6 },
-        { id: 'action', name: 'Action & Adventure', yPos: -12 },
-    ],
-    games: [
-        { id: '1', title: 'The Witcher 3: Wild Hunt', categoryId: 'rpg', tags: ['RPG', 'Fantasy', 'Open World'], desc: 'Geralt of Rivia hunts monsters in a massive dark fantasy world.', coverUrl: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co23ym.jpg' },
-        { id: '2', title: 'Cyberpunk 2077', categoryId: 'rpg', tags: ['Sci-Fi', 'Action', 'Open World'], desc: 'A neon-soaked mercenary adventure in the year 2077.', coverUrl: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co4jni.jpg' },
-        { id: '9', title: 'Doom Eternal', categoryId: 'fps', tags: ['FPS', 'Action', 'Fast-paced'], desc: "Hell's armies have invaded Earth. Become the Slayer.", coverUrl: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co4kyl.jpg' },
-        { id: '17', title: 'Red Dead Redemption 2', categoryId: 'action', tags: ['Action', 'Open World', 'Western'], desc: "Experience the legendary outlaw Arthur Morgan's final ride.", coverUrl: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1xev.jpg' }
-    ],
-    shelves: { favorites: ['1', '17'], recommendations: ['2', '9'] }
-};
-
-fetch('data.json')
-    .then((res) => { if (!res.ok) throw new Error('Fetch failed'); return res.json(); })
-    .then(buildFromData)
-    .catch((err) => {
-        console.warn('Failed to load local JSON. Using fallback data.', err);
-        buildFromData(fallbackData);
+function clearScene() {
+    cassettes.forEach(c => {
+        if(c.parent) c.parent.remove(c);
+        c.geometry.dispose();
+        if(Array.isArray(c.material)) c.material.forEach(m => m.dispose());
+        else c.material.dispose();
     });
+    cassettes.length = 0;
+    gameById.clear();
 
-// --- 9. Scroll and Navigation ---
+    const cleanGroup = (group) => {
+        while(group.children.length > 0) {
+            const obj = group.children[0];
+            group.remove(obj);
+            if(obj.geometry) obj.geometry.dispose();
+            if(obj.material) obj.material.dispose();
+        }
+    };
+    cleanGroup(libraryGroup); cleanGroup(favGroup); cleanGroup(recGroup);
+
+    activeCatIndex = 0; targetGroupY = 0;
+}
+
+function loadSteamLibrary(steamId) {
+    if (!steamId) return alert("Zəhmət olmasa Steam ID yazın!");
+    hudEl.innerText = "YÜKLƏNİR...";
+    
+    fetch(`/api/steam/${steamId}`)
+        .then((res) => {
+            if (!res.ok) throw new Error('Profil gizlidir və ya tapılmadı.');
+            return res.json();
+        })
+        .then((data) => {
+            if (data.games.length === 0) {
+                alert("Bu profilə aid oyun tapılmadı."); return;
+            }
+            clearScene();
+            buildFromData(data);
+        })
+        .catch((err) => {
+            alert(err.message);
+            clearScene();
+        });
+}
+
+$('steam-load-btn').addEventListener('click', () => {
+    let inputVal = $('steam-id-input').value.trim();
+    const profileMatch = inputVal.match(/(?:profiles|id)\/([^\/\s]+)/);
+    loadSteamLibrary(profileMatch ? profileMatch[1] : inputVal);
+});
+
+// Qaranlıq ekran olmasın deyə standart məlumat
+const fallbackData = {
+    categories: [{ id: 'cat-pro', name: 'Nümunə Kitabxana', yPos: 0 }],
+    games: [
+    
+    ],
+    shelves: { favorites: { "Seçilmişlər": ['292030'] }, recommendations: { "Tövsiyələr": ['292030'] } }
+};
+buildFromData(fallbackData);
+
 window.addEventListener('wheel', (e) => {
     if (selectedCassette || isScrollLocked) return;
 
@@ -331,9 +359,8 @@ function handleHorizontalScroll(direction) {
     updateArrowVisibility();
 }
 
-// --- 10. Selection and Inspection ---
 window.addEventListener('click', (event) => {
-    if (selectedCassette || isScrollLocked || event.target.classList.contains('nav-arrow') || event.target.tagName === 'BUTTON') return;
+    if (selectedCassette || isScrollLocked || event.target.classList.contains('nav-arrow') || event.target.tagName === 'BUTTON' || event.target.tagName === 'INPUT') return;
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -350,19 +377,19 @@ window.addEventListener('click', (event) => {
     selectedCassette.userData.isAnimatingOut = true;
     inspectRotation = 0;
 
+    // YENİ UI BİLDİRİŞLƏRİ VƏ ŞƏKİL ƏLAVƏSİ
     titleEl.innerText = selectedCassette.userData.title;
     descEl.innerText = selectedCassette.userData.desc;
     tagsEl.innerHTML = selectedCassette.userData.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+    // Steam Header Şəklini dinamik yükləyirik
+    bannerEl.src = `https://steamcdn-a.akamaihd.net/steam/apps/${selectedCassette.userData.id}/header.jpg`;
 
     infoPanel.classList.add('active');
-    leftArrow.classList.add('hidden');
-    rightArrow.classList.add('hidden');
+    leftArrow.classList.add('hidden'); rightArrow.classList.add('hidden');
 });
 
 $('close-btn').addEventListener('click', closeInspectPanel);
-$('add-fav-btn').addEventListener('click', () => { if (selectedCassette) addToFavorites(selectedCassette.userData.id); });
 
-// --- 11. Render Loop ---
 function animate() {
     requestAnimationFrame(animate);
 
@@ -373,14 +400,12 @@ function animate() {
     camera.rotation.y = swingAngle; 
     camera.position.z = 13 + Math.abs(diffX) * 0.05;
 
-    // FİX: İşığın ÖZÜ və HƏDƏFİ eyni vaxtda kameranı izləyir!
     spotLight.position.x = camera.position.x;
-    spotLight.target.position.x = camera.position.x; // <-- ƏSAS DÜZƏLİŞ BURADADIR
+    spotLight.target.position.x = camera.position.x; 
     dirLight.position.x = camera.position.x - 10;
     
-    // Rənglərin yavaş-yavaş keçidi
-    spotLight.color.lerp(targetSpotColor, 0.03);
-    dirLight.color.lerp(targetDirColor, 0.03);
+    spotLight.color.lerp(targetSpotColor, 0.05);
+    dirLight.color.lerp(targetDirColor, 0.05);
 
     libraryGroup.position.y += (targetGroupY - libraryGroup.position.y) * 0.08;
 
@@ -390,8 +415,11 @@ function animate() {
             cassette.position.lerp(targetPos, 0.07);
             
             inspectRotation += 0.008;
-            cassette.rotation.y += ((0.4 + swingAngle + Math.sin(inspectRotation) * 0.3) - cassette.rotation.y) * 0.07;
-            cassette.rotation.x += ((0.1 + Math.cos(inspectRotation) * 0.1) - cassette.rotation.x) * 0.07;
+            let targetRotY = 0.4 + swingAngle + Math.sin(inspectRotation) * 0.3;
+            let targetRotX = 0.1 + Math.cos(inspectRotation) * 0.1;
+            
+            cassette.rotation.y += (targetRotY - cassette.rotation.y) * 0.07;
+            cassette.rotation.x += (targetRotX - cassette.rotation.x) * 0.07;
             return;
         }
 
@@ -406,7 +434,6 @@ function animate() {
             worldTarget.x += offsetX + cassette.userData.parentGroup.position.x;
             worldTarget.y += cassette.userData.parentGroup.position.y;
             worldTarget.z += cassette.userData.parentGroup.position.z;
-            
             cassette.position.lerp(worldTarget, 0.07);
         }
 
