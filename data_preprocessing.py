@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-from data_source import RAW_PLAYER_DATA
+from matchmaking_ai.py import RAW_PLAYER_DATA
 
 def load_and_preprocess_data():
     """Xam datanı oxuyur, təmizləyir və ML üçün normallaşdırır"""
