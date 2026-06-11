@@ -1,0 +1,39 @@
+{
+  "categories": [
+    { "id": "rpg", "name": "Role Playing Games", "yPos": 0 },
+    { "id": "fps", "name": "First Person Shooters", "yPos": -6 },
+    { "id": "action", "name": "Action & Adventure", "yPos": -12 }
+  ],
+  "games": [
+    { "id": "1", "title": "The Witcher 3: Wild Hunt", "categoryId": "rpg", "tags": ["RPG", "Fantasy", "Open World"], "desc": "Geralt of Rivia hunts monsters in a massive dark fantasy world.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co23ym.jpg" },
+    { "id": "2", "title": "Cyberpunk 2077", "categoryId": "rpg", "tags": ["Sci-Fi", "Action", "Open World"], "desc": "A neon-soaked mercenary adventure in the year 2077.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4jni.jpg" },
+    { "id": "3", "title": "Elden Ring", "categoryId": "rpg", "tags": ["RPG", "Souls-like", "Fantasy"], "desc": "Rise, Tarnished, and claim the power of the Elden Ring.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5i0p.jpg" },
+    { "id": "4", "title": "Baldur's Gate 3", "categoryId": "rpg", "tags": ["RPG", "Turn-Based", "Fantasy"], "desc": "Gather your party and return to the Forgotten Realms.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5fui.jpg" },
+    { "id": "5", "title": "Dragon's Dogma 2", "categoryId": "rpg", "tags": ["RPG", "Action", "Fantasy"], "desc": "An immersive fantasy world where pawns aid your journey.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6x8y.jpg" },
+    { "id": "6", "title": "Starfield", "categoryId": "rpg", "tags": ["RPG", "Space", "Open World"], "desc": "Embark on an epic journey amongst the stars.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5ylz.jpg" },
+    { "id": "7", "title": "Final Fantasy XVI", "categoryId": "rpg", "tags": ["JRPG", "Fantasy", "Action"], "desc": "An epic tale of destiny and magic in a war-torn realm.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4duj.jpg" },
+    { "id": "8", "title": "Persona 5 Royal", "categoryId": "rpg", "tags": ["JRPG", "Turn-Based", "Social"], "desc": "Master the power of multiple personas in Tokyo.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x93.jpg" },
+    
+    { "id": "9", "title": "Doom Eternal", "categoryId": "fps", "tags": ["FPS", "Action", "Fast-paced"], "desc": "Hell's armies have invaded Earth. Become the Slayer.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4kyl.jpg" },
+    { "id": "10", "title": "Halo Infinite", "categoryId": "fps", "tags": ["FPS", "Sci-Fi", "Multiplayer"], "desc": "The legendary Master Chief returns to save humanity.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vbx.jpg" },
+    { "id": "11", "title": "Half-Life 2", "categoryId": "fps", "tags": ["FPS", "Classic", "Story"], "desc": "Step back into the hazardous environment of City 17.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1m79.jpg" },
+    { "id": "12", "title": "Call of Duty: Modern Warfare III", "categoryId": "fps", "tags": ["FPS", "Multiplayer", "War"], "desc": "Intense multiplayer combat with iconic operators.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5wme.jpg" },
+    { "id": "13", "title": "Valorant", "categoryId": "fps", "tags": ["Tactical", "FPS", "E-sports"], "desc": "Blend your style and compete on a global stage.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1t8h.jpg" },
+    { "id": "14", "title": "BioShock Infinite", "categoryId": "fps", "tags": ["FPS", "Story", "Narrative"], "desc": "Explore the terrifying sky city of Columbia.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1cro.jpg" },
+    { "id": "15", "title": "Overwatch 2", "categoryId": "fps", "tags": ["FPS", "Team", "Hero"], "desc": "An optimistic world where heroes fight together for peace.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co42mo.jpg" },
+    { "id": "16", "title": "Apex Legends", "categoryId": "fps", "tags": ["FPS", "Battle Royale", "Multiplayer"], "desc": "Conquer with character in this thrilling battle royale.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1t0x.jpg" },
+    
+    { "id": "17", "title": "Red Dead Redemption 2", "categoryId": "action", "tags": ["Action", "Open World", "Western"], "desc": "Experience the legendary outlaw Arthur Morgan's final ride.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xev.jpg" },
+    { "id": "18", "title": "Hollow Knight", "categoryId": "action", "tags": ["Metroidvania", "Indie", "Action"], "desc": "Explore a ruined kingdom of bugs and heroes.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co22l4.jpg" },
+    { "id": "19", "title": "Hades", "categoryId": "action", "tags": ["Rogue-like", "Action", "Indie"], "desc": "Battle your way out of the underworld in style.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co23f0.jpg" },
+    { "id": "20", "title": "Dead Cells", "categoryId": "action", "tags": ["Rogue-lite", "Action", "Indie"], "desc": "Kill. Die. Learn. Repeat. A masterpiece action game.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1zd7.jpg" },
+    { "id": "21", "title": "Celeste", "categoryId": "action", "tags": ["Platformer", "Indie", "Challenging"], "desc": "Help Madeline survive her inner journey to the mountain top.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r3a.jpg" },
+    { "id": "22", "title": "Stardew Valley", "categoryId": "action", "tags": ["Cozy", "Simulation", "Indie"], "desc": "Build the farm of your dreams in a peaceful valley.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rav.jpg" },
+    { "id": "23", "title": "Minecraft", "categoryId": "action", "tags": ["Sandbox", "Adventure", "Creative"], "desc": "Explore infinite worlds and build everything imaginable.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2p0c.jpg" },
+    { "id": "24", "title": "Terraria", "categoryId": "action", "tags": ["Sandbox", "Indie", "Adventure"], "desc": "Dig, Fight, Explore, Build! 2D sandbox adventure.", "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mxu.jpg" }
+  ],
+  "shelves": {
+    "favorites": ["1", "8", "17", "20", "24", "10"],
+    "recommendations": ["2", "3", "6", "11", "19", "21"]
+  }
+}
