@@ -1,17 +1,23 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 
-// "public" qovluğundakı index.html, styles.css və app.js-i brauzerə açırıq
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
-// Əsas səhifəyə girəndə index.html yüklənsin
+// Qovluq yolunu tam təhlükəsiz və mütləq şəkildə təyin edirik
+const publicPath = path.resolve(__dirname, 'public');
+
+// Statik faylları qoşuruq
+app.use(express.static(publicPath));
+
+// Əsas səhifəyə istək gələndə index.html-i göndəririk
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(publicPath, 'index.html'));
 });
 
-// Port təyini (Deploy platformaları üçün process.env.PORT vacibdir)
+// Port təyini
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🎮 3D Layihə aktivdir: http://localhost:${PORT}`);
+    console.log(`🎮 Server running on port ${PORT}`);
 });
