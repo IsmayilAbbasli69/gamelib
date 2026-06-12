@@ -22,14 +22,28 @@ app.get('/api/steam/:steamId', async (req, requireRes) => {
     }
 
     try {
+        // 1. Oyunçunun Profil məlumatlarını (Şəkil və Ad) çəkmək
+        const userUrl = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${steamId}`;
+        const userResponse = await axios.get(userUrl);
+        const playerData = userResponse.data.response.players[0] || null;
+
+        let userProfile = {
+            name: "GİRİŞ GÖZLƏNİLİR",
+            avatar: "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg"
+        };
+
+        if (playerData) {
+            userProfile.name = playerData.personaname;
+            userProfile.avatar = playerData.avatarfull;
+        }
+
+        // 2. Oyunların siyahısını çəkmək
         const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${steamId}&include_appinfo=true&format=json`;
         const response = await axios.get(url);
         const steamGames = response.data.response.games || [];
 
-        // Oyunların kateqoriya ID-lərini təyin edirik
         let games = steamGames.map(game => {
             const hoursPlayed = Math.round(game.playtime_forever / 60);
-            
             let catId = 'cat-zero';
             if (hoursPlayed >= 100) catId = 'cat-pro';
             else if (hoursPlayed >= 10) catId = 'cat-mid';
@@ -48,7 +62,6 @@ app.get('/api/steam/:steamId', async (req, requireRes) => {
 
         games.sort((a, b) => b.hoursPlayed - a.hoursPlayed);
 
-        // Boş rəflərin yaranmaması üçün yalnız oyun olan kateqoriyaları seçirik
         const baseCategories = [
             { id: 'cat-pro', name: 'Şah Əsərlər (100+ Saat)' },
             { id: 'cat-mid', name: 'Mütəmadi Oynanılan (10-100 Saat)' },
@@ -57,52 +70,33 @@ app.get('/api/steam/:steamId', async (req, requireRes) => {
         ];
 
         const activeCategories = baseCategories.filter(cat => games.some(g => g.categoryId === cat.id));
-        
-        // Aktiv kateqoriyalara yuxarıdan aşağıya doğru sırayla Y oxu üzrə yerləşdirmə veririk
-        const categories = activeCategories.map((cat, index) => ({
-            ...cat,
-            yPos: index * -6 // İlk rəf həmişə 0-da olacaq, digərləri -6, -12 və s.
-        }));
+        const categories = activeCategories.map((cat, index) => ({ ...cat, yPos: index * -6 }));
 
-        // --- db.json-dan TÖVSİYƏ SİSTEMİ ---
         const ownedGameIds = new Set(games.map(g => g.id));
         const dbPath = path.join(__dirname, 'db.json');
         let fakeDB = [];
-        
-        if (fs.existsSync(dbPath)) {
-            fakeDB = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-        }
+        if (fs.existsSync(dbPath)) fakeDB = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
 
         const availableRecs = fakeDB.filter(game => !ownedGameIds.has(game.id));
-        // İndi 10 oyun seçirik ki, onları iki rəfə bölək
         const shuffledRecs = availableRecs.sort(() => 0.5 - Math.random()).slice(0, 10);
-
-        const recTopShelf = [];
-        const recBottomShelf = [];
+        const recTopShelf = []; const recBottomShelf = [];
         
         shuffledRecs.forEach((rec, idx) => {
             if(idx < 5) recTopShelf.push(rec.id);
             else recBottomShelf.push(rec.id);
-
             games.push({
-                id: rec.id, title: rec.title, categoryId: 'hidden-recs',
-                tags: rec.tags, desc: rec.desc,
+                id: rec.id, title: rec.title, categoryId: 'hidden-recs', tags: rec.tags, desc: rec.desc,
                 coverUrl: `https://steamcdn-a.akamaihd.net/steam/apps/${rec.id}/library_600x900_2x.jpg`
             });
         });
 
         const myGameIds = games.filter(g => g.categoryId !== 'hidden-recs').map(g => g.id); 
-
-        // Rəflərin yeni strukturu (Obyekt daxilində çoxlu rəflər)
         const shelves = {
             favorites: { "⭐ Seçilmiş Oyunlar": myGameIds.slice(0, 5) },
-            recommendations: {
-                " İsti Tövsiyələr": recTopShelf,
-                " Fərqli Tərzlər": recBottomShelf
-            }
+            recommendations: { "🔥 İsti Tövsiyələr": recTopShelf, "🎯 Fərqli Tərzlər": recBottomShelf }
         };
 
-        requireRes.json({ categories, games, shelves });
+        requireRes.json({ userProfile, categories, games, shelves });
 
     } catch (error) {
         console.error("Steam API Error:", error.message);
@@ -111,4 +105,4 @@ app.get('/api/steam/:steamId', async (req, requireRes) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🎮 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🎮 Server ${PORT} portunda aktivdir.`));

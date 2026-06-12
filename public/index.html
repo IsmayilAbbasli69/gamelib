@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Premium Oyun Kitabxanası - Steam Edition</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
     <div id="vignette"></div>
     <div id="category-hud">Kitabxana</div>
-    <div id="instructions">RƏFLƏR ÜÇÜN MOUSE SCROLL • DAHA ÇOX OYUN ÜÇÜN OX DÜYMƏLƏRİ • BAXMAQ ÜÇÜN KLİKLƏ</div>
 
     <div id="steam-login-box">
-        <input type="text" id="steam-id-input" placeholder="Steam ID və ya Linki Yapışdır">
+        <input type="text" id="steam-id-input" placeholder="Steam ID və ya Profil Linki">
         <button id="steam-load-btn">YÜKLƏ</button>
     </div>
 
@@ -35,7 +34,7 @@
         <div class="panel-content">
             <h1 id="game-title">Oyun Adı</h1>
             <div class="meta-tags" id="game-tags"></div>
-            <p id="game-desc">Oyun barədə məlumatlar burada görünəcək.</p>
+            <p id="game-desc">Oyun barədə ətraflı məlumatlar yüklənir...</p>
             <button id="add-fav-btn">★ Seçilmişlərə Əlavə Et</button>
             <button id="close-btn">Rəfə Qayıt</button>
         </div>
